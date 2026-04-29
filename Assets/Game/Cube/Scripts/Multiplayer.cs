@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Multiplayer : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
-    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private Raycaster _raycaster;
     [SerializeField] private Exploader _exploader;
 
     private int _minValueRandom = 2;
@@ -12,7 +12,12 @@ public class Multiplayer : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.OnClick += Multiple;
+        _raycaster.ClickedToCube += Multiple;
+    }
+
+    private void OnDisable()
+    {
+        _raycaster.ClickedToCube -= Multiple;
     }
 
     private void Multiple(Cube cube)
@@ -21,7 +26,7 @@ public class Multiplayer : MonoBehaviour
 
         List<Cube> spawnCubes = _spawner.Spawn(cube, countSpawn);
 
-        _exploader.Expload(spawnCubes);
+        _exploader.Expload(cube.transform, spawnCubes);
 
         Destroy(cube.gameObject);
     }

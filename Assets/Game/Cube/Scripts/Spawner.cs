@@ -12,15 +12,17 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector3 randomOffset = Random.insideUnitCircle * 1.5f;
-            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+            Vector3 spawnPosition = cube.transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
             Cube newCube = Instantiate(cube, spawnPosition, Quaternion.identity);
 
             newCube.Initialize(newChance);
 
-            newCube.transform.localScale = cube.Size / 2;
+            Vector3 localScaleNewCube = cube.transform.localScale / 2;
 
-            Renderer renderer = newCube.GetComponent<Renderer>();
+            newCube.transform.localScale = localScaleNewCube;
+
+            Renderer renderer = newCube.Renderer;
             renderer.material.color = Random.ColorHSV();
 
             createdCubes.Add(newCube);

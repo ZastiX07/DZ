@@ -1,28 +1,28 @@
 using UnityEngine;
-using System.Collections.Generic;
+
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Renderer))]
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private Vector3 _size = new Vector3(2, 2, 2);
     [SerializeField] private ParticleSystem _explosedEffect;
     [SerializeField] private float _explodedForce = 1f;
 
+    public Rigidbody Rigidbody { get; private set; }
+    public Renderer Renderer { get; private set; }
+
     public float PercentageSeparation { get; private set; } = 100f;
-    public Vector3 Size => _size;
 
-    private void Start()
+    private void Awake()
     {
-        transform.localScale = _size;
-
-        if (GetComponent<BoxCollider>() == null)
-            gameObject.AddComponent<BoxCollider>();
-
-        if (GetComponent<Rigidbody>() == null)
-            gameObject.AddComponent<Rigidbody>();
+        Rigidbody = GetComponent<Rigidbody>();
+        Renderer = GetComponent<Renderer>();
     }
 
-    public void Initialize(float chance) 
+
+    public void Initialize(float chance)
     {
         PercentageSeparation = chance;
-    } 
+    }
 }

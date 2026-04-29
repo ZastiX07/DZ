@@ -6,18 +6,19 @@ public class Exploader : MonoBehaviour
     [SerializeField] private ParticleSystem _exploadEffect;
     [SerializeField] private float _explodedForce = 1f;
 
-    public void Expload(List<Cube> cubes)
+    public void Expload(Transform position, List<Cube> cubes)
     {
         foreach (Cube listCube in cubes)
         {
-            Vector3 explosedRadius = listCube.Size / 2;
+            Vector3 explosedRadius = listCube.transform.localScale / 2;
 
-            Rigidbody rigidbody = listCube.GetComponent<Rigidbody>();
+            Rigidbody rigidbody = listCube.Rigidbody;
+            
 
             if (rigidbody != null)
                 rigidbody.AddExplosionForce(_explodedForce, transform.position, explosedRadius.magnitude);
 
-            Instantiate(_exploadEffect, transform.position, Quaternion.identity);
+            Instantiate(_exploadEffect, position.position, Quaternion.identity);
         }
     }
 }
