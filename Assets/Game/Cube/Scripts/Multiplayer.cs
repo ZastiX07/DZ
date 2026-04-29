@@ -23,11 +23,10 @@ public class Multiplayer : MonoBehaviour
     private void Multiple(Cube cube)
     {
         int countSpawn = Random.Range(_minValueRandom, _maxValueRandom + 1);
+        Vector3 cubePosition = cube.transform.position;
 
         List<Cube> spawnCubes = _spawner.Spawn(cube, countSpawn);
 
-        _exploader.Expload(cube.transform, spawnCubes);
-
-        Destroy(cube.gameObject);
+        _exploader.Expload(cubePosition, spawnCubes);
     }
 }

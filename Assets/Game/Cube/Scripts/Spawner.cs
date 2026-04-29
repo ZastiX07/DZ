@@ -6,30 +6,43 @@ public class Spawner : MonoBehaviour
     public List<Cube> Spawn(Cube cube, int count)
     {
         List<Cube> createdCubes = new List<Cube>();
-
-        float newChance = cube.PercentageSeparation / 2;
-
-        for (int i = 0; i < count; i++)
+   
+        if (CanSplit(cube.PercentageSeparation))
         {
-            Vector3 randomOffset = Random.insideUnitCircle * 1.5f;
-            Vector3 spawnPosition = cube.transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
-            Cube newCube = Instantiate(cube, spawnPosition, Quaternion.identity);
+            float newChance = cube.PercentageSeparation / 2;
 
-            newCube.Initialize(newChance);
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 randomOffset = Random.insideUnitCircle * 1.5f;
+                Vector3 spawnPosition = cube.transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
-            Vector3 localScaleNewCube = cube.transform.localScale / 2;
+                Cube newCube = Instantiate(cube, spawnPosition, Quaternion.identity);
 
-            newCube.transform.localScale = localScaleNewCube;
+                newCube.Initialize(newChance);
 
-            Renderer renderer = newCube.Renderer;
-            renderer.material.color = Random.ColorHSV();
+                Vector3 localScaleNewCube = cube.transform.localScale / 2;
 
-            createdCubes.Add(newCube);
+                newCube.transform.localScale = localScaleNewCube;
+
+                Renderer renderer = newCube.Renderer;
+                renderer.material.color = Random.ColorHSV();
+
+                createdCubes.Add(newCube);
+            }
+            
+            Destroy(cube.gameObject);
+        }
+        else
+        {
+            Destroy(cube.gameObject);
         }
 
-        Destroy(cube.gameObject);
-
         return createdCubes;
+    }
+
+    private bool CanSplit(float chance)
+    {
+        return chance >= Random.value * 100;
     }
 }
